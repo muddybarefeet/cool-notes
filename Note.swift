@@ -12,7 +12,28 @@ import CoreData
 
 class Note: NSManagedObject {
 
-    //init
+    //init method
+    convenience init(text: String = "New Note",  context : NSManagedObjectContext){
+        if let ent = NSEntityDescription.entityForName("Note", inManagedObjectContext: context){
+            //create a new instance
+            self.init(entity: ent, insertIntoManagedObjectContext: context)
+            //init properties
+            self.text = text
+            self.createdDate = NSDate()
+        } else {
+            fatalError("Unable to find entity name!")
+        }
+    }
+    
+    var humanReadableAge: String {
+        let formatTime = NSDateFormatter()
+        formatTime.timeStyle = .NoStyle
+        formatTime.dateStyle = .ShortStyle
+        formatTime.doesRelativeDateFormatting = true
+        formatTime.locale = NSLocale.currentLocale()
+        
+        return formatTime.stringFromDate(createdDate!)
+    }
     
 
 }
